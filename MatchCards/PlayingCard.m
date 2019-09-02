@@ -10,6 +10,11 @@
 
 @implementation PlayingCard
 
+- (NSString *)contents{
+    NSArray *rankStrings = [PlayingCard rankStrings];
+    return [rankStrings[self.rank] stringByAppendingString:self.suit];
+}
+
 @synthesize suit = _suit;
 
 + (NSArray *)validSuits{
