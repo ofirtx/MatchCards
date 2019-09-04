@@ -19,6 +19,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (Card *)cardAtIndex:(NSUInteger)index;
 
 @property (nonatomic, readonly) NSInteger score;
+@property (nonatomic) NSUInteger numToMatch;
+@property (nonatomic, readonly) NSArray *lastMatched;
+@property (nonatomic, readonly) BOOL matchSuc;
+@property (nonatomic, readonly) int pointsGained;
+@property (nonatomic, readonly) NSMutableArray *chosenCards;
 
 @end
 

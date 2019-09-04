@@ -15,6 +15,9 @@
 @property (nonatomic) CardMatchingGame *game;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
+@property (weak, nonatomic) IBOutlet UILabel *gameDescriptor;
+
+
 
 @end
 
@@ -50,8 +53,27 @@
         [cardButton setTitle:[self titleForCard:card] forState:UIControlStateNormal];
         [cardButton setBackgroundImage:[self backgroundImageForCard:card] forState:UIControlStateNormal];
         cardButton.enabled = !card.matched;
-        self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", (int)self.game.score];
     }
+    self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", (int)self.game.score];
+    if(self.game.lastMatched){
+        NSString * str = [self cardsToString:self.game.lastMatched];
+        if(self.game.matchSuc){
+            self.gameDescriptor.text = [NSString stringWithFormat:@"%@ matched for %d points", str, self.game.pointsGained];
+        } else {
+            self.gameDescriptor.text = [NSString stringWithFormat:@"%@ Do not match! %d points reduced", str, -self.game.pointsGained];
+        }
+    } else {
+        NSString * str = [self cardsToString:self.game.chosenCards];
+        self.gameDescriptor.text = [NSString stringWithFormat:@"you chose %@", str];
+    }
+}
+
+-(NSString *)cardsToString:(NSArray *)cards{
+    NSMutableString * str = [[NSMutableString alloc] init];
+    for(Card *card in cards){
+        [str appendString:card.contents];
+    }
+    return str;
 }
 
 - (NSString *)titleForCard:(Card *)card {
@@ -65,6 +87,7 @@
 - (IBAction)resetGame:(id)sender {
     self.game = [self generateNewGame];
     [self updateUI];
+    self.gameDescriptor.text = @"Please choose a card";
 }
 
 
