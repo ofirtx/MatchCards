@@ -20,8 +20,12 @@
 
 @implementation ViewController
 
+- (CardMatchingGame *)generateNewGame{
+    return [[CardMatchingGame alloc] initWithCardCount:[self.buttons count] usingDeck:[self createDeck]];
+}
+
 - (CardMatchingGame *)game{
-    if (!_game) _game = [[CardMatchingGame alloc] initWithCardCount:[self.buttons count] usingDeck:[self createDeck]];
+    if (!_game) _game = [self generateNewGame];
     return _game;
 }
 
@@ -46,7 +50,7 @@
         [cardButton setTitle:[self titleForCard:card] forState:UIControlStateNormal];
         [cardButton setBackgroundImage:[self backgroundImageForCard:card] forState:UIControlStateNormal];
         cardButton.enabled = !card.matched;
-        self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", self.game.score];
+        self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", (int)self.game.score];
     }
 }
 
@@ -57,5 +61,11 @@
 - (UIImage *)backgroundImageForCard:(Card *)card{
     return [UIImage imageNamed:card.chosen ? @"blank" : @"stanford"];
 }
+
+- (IBAction)resetGame:(id)sender {
+    self.game = [self generateNewGame];
+    [self updateUI];
+}
+
 
 @end
