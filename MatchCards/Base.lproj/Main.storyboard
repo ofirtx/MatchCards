@@ -265,12 +265,24 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="xfZ-wy-OAy">
+                                <rect key="frame" x="39" y="621" width="121" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="2"/>
+                                    <segment title="3"/>
+                                </segments>
+                                <connections>
+                                    <action selector="adjustNumToMatch:" destination="BYZ-38-t0r" eventType="valueChanged" id="WdO-J6-d4t"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.98106676339999999" blue="0.57369142770000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="gameDescriptor" destination="Nia-vJ-8tc" id="K3K-TX-yar"/>
+                        <outlet property="numToMatchControl" destination="xfZ-wy-OAy" id="tG9-aB-QZt"/>
                         <outlet property="scoreLabel" destination="oBp-cU-NFR" id="WYD-bR-jeX"/>
                         <outletCollection property="buttons" destination="tpd-p1-LaZ" id="wV4-a3-VkT"/>
                         <outletCollection property="buttons" destination="gNd-te-4oN" id="ORL-vi-fRS"/>

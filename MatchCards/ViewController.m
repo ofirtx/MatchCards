@@ -16,6 +16,7 @@
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (weak, nonatomic) IBOutlet UILabel *gameDescriptor;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *numToMatchControl;
 
 
 
@@ -41,6 +42,7 @@
     // Do any additional setup after loading the view.
 }
 - (IBAction)touchCardButton:(UIButton *)sender {
+    self.numToMatchControl.enabled = NO;
     NSUInteger chosenButtonIndex = [self.buttons indexOfObject:sender];
     [self.game chooseCardAtIndex:chosenButtonIndex];
     [self updateUI];
@@ -88,7 +90,11 @@
     self.game = [self generateNewGame];
     [self updateUI];
     self.gameDescriptor.text = @"Please choose a card";
+    self.numToMatchControl.enabled = YES;
 }
 
+- (IBAction)adjustNumToMatch:(UISegmentedControl *)sender {
+    self.game.numToMatch = sender.selectedSegmentIndex + 2;
+}
 
 @end
