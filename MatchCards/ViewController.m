@@ -7,11 +7,11 @@
 //
 
 #import "ViewController.h"
-#import "CardMatchingGame.h"
+#import "ShowHistoryViewController.h"
 
 @interface ViewController ()
 
-@property (nonatomic) CardMatchingGame *game;
+
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (weak, nonatomic) IBOutlet UILabel *gameDescriptor;
@@ -23,12 +23,43 @@
 
 @implementation ViewController
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if([segue.identifier isEqualToString:@"show history"]){
+        if([segue.destinationViewController isKindOfClass:[ShowHistoryViewController class]]){
+            ShowHistoryViewController *shvc = (ShowHistoryViewController *)segue.destinationViewController;
+            [shvc setHistory:self.history];
+        }
+    }
+}
+
+- (NSMutableAttributedString *)history{
+    if(!_history) _history = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{}];
+    return _history;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self updateUI];
+    self.gameDescriptor.text = @"Please choose a card";
+    // Do any additional setup after loading the view.
+}
+
+- (NSAttributedString *)titleForCard:(Card *)card {return nil;}
+- (UIImage *)backgroundImageForCard:(Card *)card {return nil;}
+
 - (CardMatchingGame *)generateNewGame{
-    return [[CardMatchingGame alloc] initWithCardCount:[self.buttons count] usingDeck:[self createDeck]];
+    CardMatchingGame *generatedGame = [[CardMatchingGame alloc] initWithCardCount:[self.buttons count] usingDeck:[self createDeck]];
+    return generatedGame;
+}
+
+- (CardMatchingGame *)generateNewGameWithCardCount:(NSUInteger)cardCount{ //abstract
+    return nil;
 }
 
 - (CardMatchingGame *)game{
-    if (!_game) _game = [self generateNewGame];
+    if (!_game){
+        _game = [self generateNewGameWithCardCount:[self.buttons count]];
+    }
     return _game;
 }
 
@@ -36,37 +67,41 @@
     return nil;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-}
 - (IBAction)touchCardButton:(UIButton *)sender {
-    self.numToMatchControl.enabled = NO;
     NSUInteger chosenButtonIndex = [self.buttons indexOfObject:sender];
     [self.game chooseCardAtIndex:chosenButtonIndex];
     [self updateUI];
+    [self updateHistory];
+}
+
+- (void)updateHistory{
+    if (self.game.lastMatched){
+        [self.history appendAttributedString:self.gameDescriptor.attributedText];
+        [self.history appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n" attributes:@{}]];
+    }
 }
 
 - (void) updateUI{
     for (UIButton *cardButton in self.buttons){
         NSUInteger cardButtonIndex = [self.buttons indexOfObject:cardButton];
         Card *card = [self.game cardAtIndex:cardButtonIndex];
-        [cardButton setTitle:[self titleForCard:card] forState:UIControlStateNormal];
+        [cardButton setAttributedTitle:[self titleForCard:card] forState:UIControlStateNormal];
         [cardButton setBackgroundImage:[self backgroundImageForCard:card] forState:UIControlStateNormal];
+        if(card.chosen){
+            cardButton.layer.borderWidth = 2.0f;
+            cardButton.layer.borderColor = [UIColor blackColor].CGColor;
+        } else {
+            cardButton.layer.borderWidth = 0.0f;
+            cardButton.layer.borderColor = [UIColor blackColor].CGColor;
+        }
         cardButton.enabled = !card.matched;
     }
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", (int)self.game.score];
-    if(self.game.lastMatched){
-        NSString * str = [self cardsToString:self.game.lastMatched];
-        if(self.game.matchSuc){
-            self.gameDescriptor.text = [NSString stringWithFormat:@"%@ matched for %d points", str, self.game.pointsGained];
-        } else {
-            self.gameDescriptor.text = [NSString stringWithFormat:@"%@ Do not match! %d points reduced", str, -self.game.pointsGained];
-        }
-    } else {
-        NSString * str = [self cardsToString:self.game.chosenCards];
-        self.gameDescriptor.text = [NSString stringWithFormat:@"you chose %@", str];
-    }
+    self.gameDescriptor.attributedText = [self getDescriptorText];
+}
+
+- (NSAttributedString *)getDescriptorText{ //abstract
+    return nil;
 }
 
 -(NSString *)cardsToString:(NSArray *)cards{
@@ -77,13 +112,6 @@
     return str;
 }
 
-- (NSString *)titleForCard:(Card *)card {
-    return card.chosen ? card.contents : @"";
-}
-
-- (UIImage *)backgroundImageForCard:(Card *)card{
-    return [UIImage imageNamed:card.chosen ? @"blank" : @"stanford"];
-}
 
 - (IBAction)resetGame:(id)sender {
     self.game = [self generateNewGame];
