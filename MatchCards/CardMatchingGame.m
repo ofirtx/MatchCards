@@ -27,11 +27,6 @@
     return [[NSMutableArray alloc] init];
 }
 
-- (NSMutableArray *)chosenCards{
-    if (!_chosenCards) _chosenCards = [self generateEmptyArray];
-    return _chosenCards;
-}
-
 - (NSMutableArray *)cards{
     if (!_cards) _cards = [self generateEmptyArray];
     return _cards;
@@ -64,48 +59,69 @@
     return index < [self.cards count] ? self.cards[index] : nil;
 }
 
+-(void)unChooseCard:(Card *)card{
+    card.chosen = NO;
+    [self.chosenCards removeObject:card];
+    self.lastMatched = nil;
+}
+
+-(void)updateGameAfterAMatch{
+    self.matchSuc = YES;
+    self.score += self.pointsGained;
+    for(Card * matchedCard in self.chosenCards){
+        matchedCard.matched = YES;
+    }
+    self.lastMatched = self.chosenCards;
+    self.chosenCards = [[NSMutableArray alloc] init];
+}
+
+- (NSMutableArray *)chosenCards{
+    if (!_chosenCards) _chosenCards = [[NSMutableArray alloc] init];
+    return _chosenCards;
+}
+
+-(void)updateGameAfterMismatch:(Card *)card{
+    self.score -= 1;
+    self.pointsGained = -1;
+    self.matchSuc = NO;
+    for(Card * matchedCard in self.chosenCards){
+        matchedCard.chosen = NO;
+    }
+    self.lastMatched = self.chosenCards;
+    self.chosenCards = [[NSMutableArray alloc] init];
+    [self.chosenCards addObject:card];
+}
+
+-(void)tryToMatch:(Card *)card{
+    int matchScore = [card match:self.chosenCards];
+    [self.chosenCards addObject:card];
+    if(matchScore){
+        self.pointsGained = matchScore;
+        [self updateGameAfterAMatch];
+    }
+    else{
+        [self updateGameAfterMismatch:card];
+    }
+}
+
 - (void)chooseCardAtIndex:(NSUInteger)index{
     Card *card = [self cardAtIndex:index];
     if(!card.matched){
         if(card.chosen){
-            card.chosen = NO;
-            [self.chosenCards removeObject:card];
-            self.lastMatched = nil;
+            [self unChooseCard:card];
             return;
         } else {
             if([self.chosenCards count] == self.numToMatch - 1){
-                int matchScore = [card match:self.chosenCards];
-                [self.chosenCards addObject:card];
-                if(matchScore){
-                    self.matchSuc = YES;
-                    self.pointsGained = matchScore * MATCHING_BONUS;
-                    self.score += self.pointsGained;
-                    for(Card * matchedCard in self.chosenCards){
-                        matchedCard.matched = YES;
-                    }
-                    self.lastMatched = self.chosenCards;
-                    self.chosenCards = [self generateEmptyArray];
-                } else {
-                    self.score -= MISMATCH_PENALTY;
-                    self.pointsGained = -MISMATCH_PENALTY;
-                    self.matchSuc = NO;
-                    for(Card * matchedCard in self.chosenCards){
-                        matchedCard.chosen = NO;
-                    }
-                    self.lastMatched = self.chosenCards;
-                    self.chosenCards = [self generateEmptyArray];
-                    [self.chosenCards addObject:card];
-                }
-            }
-            else{
+                [self tryToMatch:card];
+            } else {
                 [self.chosenCards addObject:card];
                 self.lastMatched = nil;
             }
-            card.chosen = YES;
         }
-        self.score -= COST_TO_CHOSE;
         card.chosen = YES;
     }
+    
 }
+
 
 @end
