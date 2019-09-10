@@ -29,6 +29,7 @@
 @synthesize pointsGained;
 @synthesize chosenCards = _chosenCards;
 
+
 - (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck{
     self = [super initWithCardCount:count usingDeck:deck];
     self.numToMatch = 3;
