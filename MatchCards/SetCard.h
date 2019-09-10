@@ -7,6 +7,7 @@
 //
 
 #import "Card.h"
+#define NUMBER_TO_MATCH 3
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,10 +15,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSString *shape;
 @property (strong, nonatomic) NSString *color;
-@property (nonatomic) BOOL filled;
+@property (nonatomic) NSUInteger shading;
+@property (nonatomic) NSUInteger number;
 
 + (NSArray *) validShapes;
 + (NSArray *) validColors;
+
 
 @end
 

@@ -18,7 +18,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.HistoryTextView.attributedText = self.historyTextToPresent;
     // Do any additional setup after loading the view.
+}
+
+-(NSAttributedString *)historyTextToPresent{
+    if(!_historyTextToPresent) _historyTextToPresent = [[NSAttributedString alloc] initWithString:@"" attributes:@{}];
+    return _historyTextToPresent;
 }
 
 - (void)viewDidAppear:(BOOL)animated{
