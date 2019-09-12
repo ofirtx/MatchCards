@@ -13,11 +13,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CardMatchinGameFactory : NSObject
 
-- (CardMatchingGame *)createSetGame;
-- (CardMatchingGame *)createSetGameWithCount:(NSUInteger)count;
++ (CardMatchingGame *)createSetGame;
++ (CardMatchingGame *)createSetGameWithCount:(NSUInteger)count;
 
-- (CardMatchingGame *)createPlayingCardMatchingGame;
-- (CardMatchingGame *)createPlayingCardMatchingGameWithCount:(NSUInteger)count;
++ (CardMatchingGame *)createPlayingCardMatchingGame;
++ (CardMatchingGame *)createPlayingCardMatchingGameWithCount:(NSUInteger)count;
 
 @end
 
