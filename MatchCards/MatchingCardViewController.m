@@ -6,10 +6,10 @@
 //  Copyright © 2019 Ofir Talmor. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "MatchingCardViewController.h"
 #import "ShowHistoryViewController.h"
 
-@interface ViewController ()
+@interface MatchingCardViewController ()
 
 
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
@@ -21,7 +21,7 @@
 
 @end
 
-@implementation ViewController
+@implementation MatchingCardViewController
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if([segue.identifier isEqualToString:@"show history"]){

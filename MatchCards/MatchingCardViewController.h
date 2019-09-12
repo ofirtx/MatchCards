@@ -11,7 +11,7 @@
 #import "CardMatchingGame.h"
 
 
-@interface ViewController : UIViewController
+@interface MatchingCardViewController : UIViewController
 
 @property (nonatomic) CardMatchingGame *game;
 @property (nonatomic) NSMutableAttributedString *history;
