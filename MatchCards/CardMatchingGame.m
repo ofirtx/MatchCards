@@ -32,7 +32,7 @@
     return _cards;
 }
 
-- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck{
+- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(id <Deck>)deck{
     self = [super init];
     
     if(self){
@@ -40,7 +40,7 @@
             return nil;
         }
         for (int i = 0; i < count; i++){
-            Card *card = [deck drawRandomCard];
+            id <Card> card = [deck drawRandomCard];
             if(card){
                 [self.cards addObject:card];
             } else {
@@ -55,11 +55,11 @@
     return self;
 }
 
-- (Card *)cardAtIndex:(NSUInteger)index{
+- (id <Card>)cardAtIndex:(NSUInteger)index{
     return index < [self.cards count] ? self.cards[index] : nil;
 }
 
--(void)unChooseCard:(Card *)card{
+-(void)unChooseCard:(id <Card>)card{
     card.chosen = NO;
     [self.chosenCards removeObject:card];
     self.lastMatched = nil;
@@ -68,7 +68,7 @@
 -(void)updateGameAfterAMatch{
     self.matchSuc = YES;
     self.score += self.pointsGained;
-    for(Card * matchedCard in self.chosenCards){
+    for(id <Card> matchedCard in self.chosenCards){
         matchedCard.matched = YES;
     }
     self.lastMatched = self.chosenCards;
@@ -80,11 +80,11 @@
     return _chosenCards;
 }
 
--(void)updateGameAfterMismatch:(Card *)card{
+-(void)updateGameAfterMismatch:(id <Card>)card{
     self.score -= 1;
     self.pointsGained = -1;
     self.matchSuc = NO;
-    for(Card * matchedCard in self.chosenCards){
+    for(id <Card> matchedCard in self.chosenCards){
         matchedCard.chosen = NO;
     }
     self.lastMatched = self.chosenCards;
@@ -92,7 +92,7 @@
     [self.chosenCards addObject:card];
 }
 
--(void)tryToMatch:(Card *)card{
+-(void)tryToMatch:(id <Card>)card{
     int matchScore = [card match:self.chosenCards];
     [self.chosenCards addObject:card];
     if(matchScore){
@@ -105,7 +105,7 @@
 }
 
 - (void)chooseCardAtIndex:(NSUInteger)index{
-    Card *card = [self cardAtIndex:index];
+    id <Card> card = [self cardAtIndex:index];
     if(!card.matched){
         if(card.chosen){
             [self unChooseCard:card];
