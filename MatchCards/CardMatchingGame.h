@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CardMatchingGame : NSObject
 
-- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(id <Deck>)deck usingLogic:(id <MatchingGameLogic>)logic;
+- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(id <Deck>)deck usingLogic:(id <MatchingGameLogic>)logic matchingNumber:(NSUInteger)number;
 // designated initializer
 - (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(id <Deck>)deck;
 

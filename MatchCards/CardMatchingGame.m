@@ -36,7 +36,7 @@
     return _cards;
 }
 
-- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(id <Deck>)deck usingLogic:(id <MatchingGameLogic>)logic{
+- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(id <Deck>)deck usingLogic:(id <MatchingGameLogic>)logic matchingNumber:(NSUInteger)number{
     self = [super init];
     
     if(self){
@@ -55,7 +55,7 @@
             }
         }
         
-        self.numToMatch = 2; //default number of cards to match
+        self.numToMatch = number; //default number of cards to match
     }
     
     return self;
