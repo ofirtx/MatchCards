@@ -44,12 +44,11 @@
     // Do any additional setup after loading the view.
 }
 
-- (NSAttributedString *)titleForCard:(Card *)card {return nil;}
-- (UIImage *)backgroundImageForCard:(Card *)card {return nil;}
+- (NSAttributedString *)titleForCard:(id <Card>)card {return nil;}
+- (UIImage *)backgroundImageForCard:(id <Card>)card {return nil;}
 
 - (CardMatchingGame *)generateNewGame{
-    CardMatchingGame *generatedGame = [[CardMatchingGame alloc] initWithCardCount:[self.buttons count] usingDeck:[self createDeck]];
-    return generatedGame;
+    return nil;
 }
 
 - (CardMatchingGame *)generateNewGameWithCardCount:(NSUInteger)cardCount{ //abstract
@@ -61,10 +60,6 @@
         _game = [self generateNewGameWithCardCount:[self.buttons count]];
     }
     return _game;
-}
-
-- (Deck *)createDeck{ // abstract
-    return nil;
 }
 
 - (IBAction)touchCardButton:(UIButton *)sender {
@@ -84,7 +79,7 @@
 - (void) updateUI{
     for (UIButton *cardButton in self.buttons){
         NSUInteger cardButtonIndex = [self.buttons indexOfObject:cardButton];
-        Card *card = [self.game cardAtIndex:cardButtonIndex];
+        id <Card> card = [self.game cardAtIndex:cardButtonIndex];
         [cardButton setAttributedTitle:[self titleForCard:card] forState:UIControlStateNormal];
         [cardButton setBackgroundImage:[self backgroundImageForCard:card] forState:UIControlStateNormal];
         if(card.chosen){
@@ -106,7 +101,7 @@
 
 -(NSString *)cardsToString:(NSArray *)cards{
     NSMutableString * str = [[NSMutableString alloc] init];
-    for(Card *card in cards){
+    for(id <Card> card in cards){
         [str appendString:card.contents];
     }
     return str;

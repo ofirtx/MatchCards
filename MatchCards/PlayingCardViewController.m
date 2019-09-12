@@ -8,7 +8,8 @@
 
 #import "PlayingCardViewController.h"
 #import "PlayingCardDeck.h"
-#import "PlayingCardMatchingGame.h"
+#import "CardMatchinGameFactory.h"
+#import "PlayingCard.h"
 
 @interface PlayingCardViewController ()
 
@@ -21,21 +22,17 @@
     // Do any additional setup after loading the view.
 }
 
-- (Deck *)createDeck {
-    return [[PlayingCardDeck alloc] init];
-}
-
 - (CardMatchingGame *)generateNewGameWithCardCount:(NSUInteger)cardCount{
-    CardMatchingGame *generatedGame = [[PlayingCardMatchingGame alloc] initWithCardCount:cardCount usingDeck:[self createDeck]];
+    CardMatchingGame *generatedGame = [CardMatchinGameFactory createPlayingCardMatchingGameWithCount:cardCount];
     return generatedGame;
 }
 
-- (NSAttributedString *)titleForCard:(Card *)card {
+- (NSAttributedString *)titleForCard:(PlayingCard *)card {
     NSString *title = card.chosen ? card.contents : @"";
     return [[NSAttributedString alloc] initWithString:title attributes:@{}];
 }
 
-- (UIImage *)backgroundImageForCard:(Card *)card{
+- (UIImage *)backgroundImageForCard:(PlayingCard *)card{
     return [UIImage imageNamed:card.chosen ? @"blank" : @"stanford"];
 }
 
@@ -44,9 +41,9 @@
     if(self.game.lastMatched){
         NSString * str = [self cardsToString:self.game.lastMatched];
         if(self.game.matchSuc){
-            descriptorText = [NSString stringWithFormat:@"%@ matched for %d points", str, self.game.pointsGained];
+            descriptorText = [NSString stringWithFormat:@"%@ matched for %ld points", str, self.game.pointsGained];
         } else {
-            descriptorText = [NSString stringWithFormat:@"%@ Do not match! %d points reduced", str, -self.game.pointsGained];
+            descriptorText = [NSString stringWithFormat:@"%@ Do not match! %ld points reduced", str, -self.game.pointsGained];
         }
     } else {
         if ([self.game.chosenCards count] > 0){
@@ -62,7 +59,7 @@
 
 -(NSString *)cardsToString:(NSArray *)cards{
     NSMutableString * str = [[NSMutableString alloc] init];
-    for(Card *card in cards){
+    for(PlayingCard *card in cards){
         [str appendString:card.contents];
     }
     return str;
