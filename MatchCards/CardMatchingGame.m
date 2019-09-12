@@ -7,6 +7,7 @@
 //
 
 #import "CardMatchingGame.h"
+#import "MatchingGameLogic.h"
 
 # define MISMATCH_PENALTY 2
 #define MATCHING_BONUS 4
@@ -18,7 +19,10 @@
 @property (nonatomic, readwrite) NSMutableArray *chosenCards;
 @property (nonatomic, readwrite) NSArray *lastMatched;
 @property (nonatomic, readwrite) BOOL matchSuc;
-@property (nonatomic, readwrite) int pointsGained;
+@property (nonatomic, readwrite) NSInteger pointsGained;
+@property (nonatomic) id <Deck> deck;
+@property (nonatomic) id <MatchingGameLogic> logic;
+
 @end
 
 @implementation CardMatchingGame
@@ -30,6 +34,31 @@
 - (NSMutableArray *)cards{
     if (!_cards) _cards = [self generateEmptyArray];
     return _cards;
+}
+
+- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(id <Deck>)deck usingLogic:(id <MatchingGameLogic>)logic{
+    self = [super init];
+    
+    if(self){
+        self.deck = deck;
+        self.logic = logic;
+        if (count <= 1){
+            return nil;
+        }
+        for (int i = 0; i < count; i++){
+            id <Card> card = [deck drawRandomCard];
+            if(card){
+                [self.cards addObject:card];
+            } else {
+                self = nil;
+                break;
+            }
+        }
+        
+        self.numToMatch = 2; //default number of cards to match
+    }
+    
+    return self;
 }
 
 - (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(id <Deck>)deck{
@@ -81,8 +110,8 @@
 }
 
 -(void)updateGameAfterMismatch:(id <Card>)card{
-    self.score -= 1;
-    self.pointsGained = -1;
+    self.score -= self.logic.mismatchPenalty;
+    self.pointsGained = -self.logic.mismatchPenalty;
     self.matchSuc = NO;
     for(id <Card> matchedCard in self.chosenCards){
         matchedCard.chosen = NO;
@@ -92,9 +121,9 @@
     [self.chosenCards addObject:card];
 }
 
--(void)tryToMatch:(id <Card>)card{
-    int matchScore = [card match:self.chosenCards];
+- (void)tryToMatch:(id <Card>)card{
     [self.chosenCards addObject:card];
+    int matchScore = [self.logic match:self.chosenCards];
     if(matchScore){
         self.pointsGained = matchScore;
         [self updateGameAfterAMatch];

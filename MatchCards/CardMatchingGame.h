@@ -7,11 +7,13 @@
 //
 
 #import "Deck.h"
+#import "MatchingGameLogic.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CardMatchingGame : NSObject
 
+- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(id <Deck>)deck usingLogic:(id <MatchingGameLogic>)logic;
 // designated initializer
 - (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(id <Deck>)deck;
 
@@ -22,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) NSUInteger numToMatch;
 @property (nonatomic, readonly) NSArray *lastMatched;
 @property (nonatomic, readonly) BOOL matchSuc;
-@property (nonatomic, readonly) int pointsGained;
+@property (nonatomic, readonly) NSInteger pointsGained;
 @property (nonatomic, readonly) NSMutableArray *chosenCards;
 
 @end
