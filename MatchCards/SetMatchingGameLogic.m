@@ -59,4 +59,8 @@
     return equal || dif;
 }
 
+- (void)replaceMatchedCards:(NSMutableArray *)cards withDeck:(id <Deck>)deck{
+    return nil; //TODO implement
+}
+
 @end

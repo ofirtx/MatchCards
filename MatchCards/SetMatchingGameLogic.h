@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 -(int)match:(NSArray *)cards;
-
+- (void)replaceMatchedCards:(NSMutableArray *)cards withDeck:(id <Deck>)deck;
 
 @end
 

@@ -22,6 +22,7 @@
 @property (nonatomic, readwrite) NSInteger pointsGained;
 @property (nonatomic) id <Deck> deck;
 @property (nonatomic) id <MatchingGameLogic> logic;
+@property (nonatomic) NSUInteger minNumberToHold;
 
 @end
 
@@ -54,7 +55,7 @@
                 break;
             }
         }
-        
+        self.minNumberToHold = count;
         self.numToMatch = number; //default number of cards to match
     }
     
@@ -150,6 +151,12 @@
         card.chosen = YES;
     }
     
+}
+
+- (void)replaceMatchedCards{
+    for (NSUInteger i = 0; i < self.cards.count; i++){
+        
+    }
 }
 
 
