@@ -16,9 +16,8 @@
 @property (nonatomic) CardMatchingGame *game;
 @property (nonatomic) NSMutableAttributedString *history;
 
-- (Deck *)createDeck;
-- (NSAttributedString *)titleForCard:(Card *)card;
-- (UIImage *)backgroundImageForCard:(Card *)card;
+- (NSAttributedString *)titleForCard:(id <Card>)card;
+- (UIImage *)backgroundImageForCard:(id <Card>)card;
 - (NSAttributedString *)getDescriptorText;
 - (CardMatchingGame *)generateNewGameWithCardCount:(NSUInteger)cardCount;
 

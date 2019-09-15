@@ -1,28 +1,24 @@
 //
-//  MatchingGameLogic.h
-//  MatchCards
+//  PlayingCardMatchingGameLogic.h
+//  MatchDrawnCards
 //
-//  Created by Ofir Talmor on 10/09/2019.
+//  Created by Ofir Talmor on 11/09/2019.
 //  Copyright © 2019 Ofir Talmor. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import "Deck.h"
+#import "MatchingGameLogic.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol MatchingGameLogic <NSObject>
+@interface PlayingCardMatchingGameLogic : NSObject <MatchingGameLogic>
 
-@required
 @property (nonatomic, readonly) NSUInteger mismatchPenalty;
 @property (nonatomic, readonly) NSUInteger choosingPenalty;
 @property (nonatomic, readonly) NSUInteger numberOfCardsToAdd;
 
-
-- (int)match:(NSArray *)cards;
+-(int)match:(NSArray *)cards;
 - (void)replaceMatchedCards:(NSMutableArray *)cards withDeck:(id <Deck>)deck;
-
-@optional
 
 @end
 

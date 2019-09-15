@@ -11,7 +11,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SetCard : Card
+@interface SetCard : NSObject <Card>
+
+@property (strong, nonatomic) NSString *contents;
+@property (nonatomic) BOOL chosen;
+@property (nonatomic) BOOL matched;
 
 @property (strong, nonatomic) NSString *shape;
 @property (strong, nonatomic) NSString *color;
@@ -20,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSArray *) validShapes;
 + (NSArray *) validColors;
-
+- (int)match:(NSArray *)otherCards;
 
 @end
 

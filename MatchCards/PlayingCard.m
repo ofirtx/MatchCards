@@ -56,11 +56,11 @@
         }
     } else {
         NSMutableArray *  newList = [[NSMutableArray alloc] init];
-        for(Card *card in otherCards){
+        for(id <Card>card in otherCards){
             score += [self match:@[card]];
             [newList addObject:card];
         }
-        Card *firstCard = [newList firstObject];
+        id <Card> firstCard = [newList firstObject];
         [newList removeObjectAtIndex:0];
         score += [firstCard match:newList];
     }

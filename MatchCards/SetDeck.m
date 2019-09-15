@@ -9,6 +9,12 @@
 #import "SetDeck.h"
 #import "SetCard.h"
 
+@interface SetDeck()
+
+@property (strong, nonatomic) NSMutableArray *cards;
+
+@end
+
 @implementation SetDeck
 
 -(instancetype)init{
@@ -32,6 +38,36 @@
         }
     }
     return self;
+}
+
+- (NSMutableArray *)cards{
+    if(!_cards) _cards = [[NSMutableArray alloc] init];
+    return _cards;
+}
+
+- (void) addCard:(id <Deck>) card atTop:(BOOL)atTop{
+    if (atTop){
+        [self.cards insertObject:card atIndex:0];
+    }
+    else{
+        [self.cards addObject:card];
+    }
+}
+
+- (void) addCard:(id <Card>)card{
+    [self addCard:card atTop:YES];
+}
+
+- (id <Card>)drawRandomCard{
+    id <Card> randomCard = nil;
+    
+    if([self.cards count]){
+        unsigned index = arc4random() % [self.cards count];
+        randomCard = self.cards[index];
+        [self.cards removeObjectAtIndex:index];
+    }
+    
+    return randomCard;
 }
 
 @end

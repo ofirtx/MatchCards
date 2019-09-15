@@ -11,14 +11,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PlayingCard : Card
-
+@interface PlayingCard : NSObject <Card>
+@property (strong, nonatomic) NSString *contents;
+@property (nonatomic) BOOL chosen;
+@property (nonatomic) BOOL matched;
 @property (strong, nonatomic) NSString *suit;
 @property (nonatomic) NSUInteger rank;
 
 + (NSArray *) validSuits;
 + (NSUInteger) maxRank;
 
+- (int)match:(NSArray *)otherCards;
 @end
 
 NS_ASSUME_NONNULL_END
