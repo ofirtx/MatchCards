@@ -18,7 +18,6 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *numToMatchControl;
 
 
-
 @end
 
 @implementation MatchingCardViewController
