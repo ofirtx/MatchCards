@@ -7,6 +7,7 @@
 //
 
 #import "CardMatchingGame.h"
+#import "MatchingGameLogic.h"
 
 # define MISMATCH_PENALTY 2
 #define MATCHING_BONUS 4
@@ -18,7 +19,11 @@
 @property (nonatomic, readwrite) NSMutableArray *chosenCards;
 @property (nonatomic, readwrite) NSArray *lastMatched;
 @property (nonatomic, readwrite) BOOL matchSuc;
-@property (nonatomic, readwrite) int pointsGained;
+@property (nonatomic, readwrite) NSInteger pointsGained;
+@property (nonatomic) id <Deck> deck;
+@property (nonatomic) id <MatchingGameLogic> logic;
+@property (nonatomic) NSUInteger minNumberToHold;
+
 @end
 
 @implementation CardMatchingGame
@@ -32,7 +37,32 @@
     return _cards;
 }
 
-- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck{
+- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(id <Deck>)deck usingLogic:(id <MatchingGameLogic>)logic matchingNumber:(NSUInteger)number{
+    self = [super init];
+    
+    if(self){
+        self.deck = deck;
+        self.logic = logic;
+        if (count <= 1){
+            return nil;
+        }
+        for (int i = 0; i < count; i++){
+            id <Card> card = [deck drawRandomCard];
+            if(card){
+                [self.cards addObject:card];
+            } else {
+                self = nil;
+                break;
+            }
+        }
+        self.minNumberToHold = count;
+        self.numToMatch = number; //default number of cards to match
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(id <Deck>)deck{
     self = [super init];
     
     if(self){
@@ -40,7 +70,7 @@
             return nil;
         }
         for (int i = 0; i < count; i++){
-            Card *card = [deck drawRandomCard];
+            id <Card> card = [deck drawRandomCard];
             if(card){
                 [self.cards addObject:card];
             } else {
@@ -55,11 +85,11 @@
     return self;
 }
 
-- (Card *)cardAtIndex:(NSUInteger)index{
+- (id <Card>)cardAtIndex:(NSUInteger)index{
     return index < [self.cards count] ? self.cards[index] : nil;
 }
 
--(void)unChooseCard:(Card *)card{
+-(void)unChooseCard:(id <Card>)card{
     card.chosen = NO;
     [self.chosenCards removeObject:card];
     self.lastMatched = nil;
@@ -68,7 +98,7 @@
 -(void)updateGameAfterAMatch{
     self.matchSuc = YES;
     self.score += self.pointsGained;
-    for(Card * matchedCard in self.chosenCards){
+    for(id <Card> matchedCard in self.chosenCards){
         matchedCard.matched = YES;
     }
     self.lastMatched = self.chosenCards;
@@ -80,21 +110,19 @@
     return _chosenCards;
 }
 
--(void)updateGameAfterMismatch:(Card *)card{
-    self.score -= 1;
-    self.pointsGained = -1;
+-(void)updateGameAfterMismatch:(id <Card>)card{
+    self.score -= self.logic.mismatchPenalty;
+    self.pointsGained = -self.logic.mismatchPenalty;
     self.matchSuc = NO;
-    for(Card * matchedCard in self.chosenCards){
+    for(id <Card> matchedCard in self.chosenCards){
         matchedCard.chosen = NO;
     }
     self.lastMatched = self.chosenCards;
     self.chosenCards = [[NSMutableArray alloc] init];
-    [self.chosenCards addObject:card];
 }
 
--(void)tryToMatch:(Card *)card{
-    int matchScore = [card match:self.chosenCards];
-    [self.chosenCards addObject:card];
+- (void)tryToMatch:(id <Card>)card{
+    int matchScore = [self.logic match:self.chosenCards];
     if(matchScore){
         self.pointsGained = matchScore;
         [self updateGameAfterAMatch];
@@ -105,23 +133,34 @@
 }
 
 - (void)chooseCardAtIndex:(NSUInteger)index{
-    Card *card = [self cardAtIndex:index];
+    id <Card> card = [self cardAtIndex:index];
     if(!card.matched){
         if(card.chosen){
             [self unChooseCard:card];
             return;
         } else {
-            if([self.chosenCards count] == self.numToMatch - 1){
+            card.chosen = YES;
+            [self.chosenCards addObject:card];
+            if([self.chosenCards count] == self.numToMatch){
                 [self tryToMatch:card];
             } else {
-                [self.chosenCards addObject:card];
                 self.lastMatched = nil;
             }
         }
-        card.chosen = YES;
     }
-    
+    [self replaceMatchedCards];
 }
 
+- (void)replaceMatchedCards{
+    [self.logic replaceMatchedCards:self.cards withDeck:self.deck];
+}
+
+- (void)dealMoreCards{
+    for (NSUInteger i = 0; i < self.logic.numberOfCardsToAdd; i++){
+        id <Card> drawnCard = [self.deck drawRandomCard];
+        if(!drawnCard) break;
+        [self.cards addObject:drawnCard];
+    }
+}
 
 @end

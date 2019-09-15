@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Card : NSObject
+@protocol Card <NSObject>
 
 @property (strong, nonatomic) NSString *contents;
 @property (nonatomic) BOOL chosen;

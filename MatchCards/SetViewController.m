@@ -8,7 +8,7 @@
 
 #import "SetViewController.h"
 #import "SetDeck.h"
-#import "SetCardMatchingGame.h"
+#import "CardMatchinGameFactory.h"
 
 @interface SetViewController ()
 
@@ -16,13 +16,8 @@
 
 @implementation SetViewController
 
-- (Deck *)createDeck {
-    Deck *deck = [[SetDeck alloc] init];
-    return deck;
-}
-
 - (CardMatchingGame *)generateNewGameWithCardCount:(NSUInteger)cardCount{
-    CardMatchingGame *generatedGame = [[SetCardMatchingGame alloc] initWithCardCount:cardCount usingDeck:[self createDeck]];
+    CardMatchingGame *generatedGame = [CardMatchinGameFactory createSetGameWithCount:cardCount];
     return generatedGame;
 }
 
@@ -58,7 +53,7 @@
     return color;
 }
 
-- (UIImage *)backgroundImageForCard:(Card *)card{
+- (UIImage *)backgroundImageForCard:(SetCard *)card{
     UIImage *image = [UIImage imageNamed:@"blank"];
     return image;
 }
@@ -86,7 +81,7 @@
 
 -(NSMutableAttributedString *)cardsToString:(NSArray *)cards{
     NSMutableAttributedString * str = [[NSMutableAttributedString alloc] init];
-    for(Card *card in cards){
+    for(SetCard *card in cards){
         [str appendAttributedString:[self titleForCard:card]];
     }
     return str;

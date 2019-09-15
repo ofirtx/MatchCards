@@ -11,11 +11,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Deck : NSObject
+@protocol Deck <NSObject>
 
-- (void) addCard:(Card *)card atTop:(BOOL)atTop;
-- (void) addCard:(Card *)card;
-- (Card *)drawRandomCard;
+- (void) addCard:(id <Card>)card atTop:(BOOL)atTop;
+- (void) addCard:(id <Card>)card;
+- (id <Card>)drawRandomCard;
+
 @end
 
 NS_ASSUME_NONNULL_END
