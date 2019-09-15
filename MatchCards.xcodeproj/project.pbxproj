@@ -27,6 +27,7 @@
 		71649B0A232A671C00550C61 /* CardMatchinGameFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 71649B09232A671C00550C61 /* CardMatchinGameFactory.m */; };
 		71649B0D232A69C200550C61 /* PlayingCardMatchingGameLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 71649B0B232A69C200550C61 /* PlayingCardMatchingGameLogic.m */; };
 		71649B1F232E97AC00550C61 /* Grid.m in Sources */ = {isa = PBXBuildFile; fileRef = 71649B1D232E97A500550C61 /* Grid.m */; };
+		71649B25232EA7D100550C61 /* CardViewHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 71649B24232EA7D100550C61 /* CardViewHolder.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +91,8 @@
 		71649B0C232A69C200550C61 /* PlayingCardMatchingGameLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayingCardMatchingGameLogic.h; sourceTree = "<group>"; };
 		71649B1D232E97A500550C61 /* Grid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Grid.m; sourceTree = "<group>"; };
 		71649B1E232E97AB00550C61 /* Grid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Grid.h; sourceTree = "<group>"; };
+		71649B23232EA7D100550C61 /* CardViewHolder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardViewHolder.h; sourceTree = "<group>"; };
+		71649B24232EA7D100550C61 /* CardViewHolder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CardViewHolder.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +175,8 @@
 				71649B09232A671C00550C61 /* CardMatchinGameFactory.m */,
 				71649B1E232E97AB00550C61 /* Grid.h */,
 				71649B1D232E97A500550C61 /* Grid.m */,
+				71649B23232EA7D100550C61 /* CardViewHolder.h */,
+				71649B24232EA7D100550C61 /* CardViewHolder.m */,
 				71496307231D44EC0008BCB1 /* Assets.xcassets */,
 				71496309231D44EC0008BCB1 /* LaunchScreen.storyboard */,
 				7149630C231D44EC0008BCB1 /* Info.plist */,
@@ -342,6 +347,7 @@
 				712D923B231E967A002190FF /* CardMatchingGame.m in Sources */,
 				71496341231D5D720008BCB1 /* PlayingCardDeck.m in Sources */,
 				71496300231D44EC0008BCB1 /* AppDelegate.m in Sources */,
+				71649B25232EA7D100550C61 /* CardViewHolder.m in Sources */,
 				71649A692324ED0A00550C61 /* SetDeck.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

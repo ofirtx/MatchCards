@@ -9,6 +9,7 @@
 #import "MatchingCardViewController.h"
 #import "ShowHistoryViewController.h"
 #import "Grid.h"
+#import "CardViewHolder.h"
 
 @interface MatchingCardViewController ()
 
@@ -18,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *gameDescriptor;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *numToMatchControl;
 
+@property (nonatomic) NSMutableArray <CardViewHolder*> *cardViewHolders;
 @property (nonatomic) Grid *grid;
 
 @end
@@ -63,6 +65,12 @@
     return _game;
 }
 
+- (NSMutableArray *)cardViewHolders
+{
+    if (!_cardViews) _cardViewHolders = [NSMutableArray array];
+    return _cardViewHolders;
+}
+
 - (IBAction)touchCardButton:(UIButton *)sender {
     NSUInteger chosenButtonIndex = [self.buttons indexOfObject:sender];
     [self.game chooseCardAtIndex:chosenButtonIndex];
@@ -77,20 +85,21 @@
     }
 }
 
+- (CardViewHolder *)getHolderOfCard:(id <Card>)card{
+    return nil; //TODO implement
+}
+
+- (void)removeMatchedCardViews{
+    for(id <Card> matched in self.game.lastMatched){
+        CardViewHolder *holder = [self getHolderOfCard:matched];
+        
+    }
+}
+
 - (void) updateUI{
-    for (UIButton *cardButton in self.buttons){
-        NSUInteger cardButtonIndex = [self.buttons indexOfObject:cardButton];
-        id <Card> card = [self.game cardAtIndex:cardButtonIndex];
-        [cardButton setAttributedTitle:[self titleForCard:card] forState:UIControlStateNormal];
-        [cardButton setBackgroundImage:[self backgroundImageForCard:card] forState:UIControlStateNormal];
-        if(card.chosen){
-            cardButton.layer.borderWidth = 2.0f;
-            cardButton.layer.borderColor = [UIColor blackColor].CGColor;
-        } else {
-            cardButton.layer.borderWidth = 0.0f;
-            cardButton.layer.borderColor = [UIColor blackColor].CGColor;
-        }
-        cardButton.enabled = !card.matched;
+    
+    for(NSUInteger i = 0; i < [self.game numberOfDealtCards]; i++){
+        
     }
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", (int)self.game.score];
     self.gameDescriptor.attributedText = [self getDescriptorText];
