@@ -150,13 +150,11 @@
         }
         card.chosen = YES;
     }
-    
+    [self replaceMatchedCards];
 }
 
 - (void)replaceMatchedCards{
-    for (NSUInteger i = 0; i < self.cards.count; i++){
-        
-    }
+    [self.logic replaceMatchedCards:self.cards withDeck:self.deck];
 }
 
 

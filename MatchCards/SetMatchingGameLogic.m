@@ -59,8 +59,26 @@
     return equal || dif;
 }
 
+- (NSUInteger)numberOfMinCardsToHold{return 12;}
+
+- (void)slideToFit:(NSMutableArray *)cards withDeck:(id <Deck>)deck{
+    [cards removeObjectIdenticalTo:[NSNull null]];
+}
+
 - (void)replaceMatchedCards:(NSMutableArray *)cards withDeck:(id <Deck>)deck{
-    return nil; //TODO implement
+    NSUInteger numberOfDealtCards = cards.count;
+    if (numberOfDealtCards > self.numberOfMinCardsToHold){
+        [self slideToFit:cards withDeck:deck];
+        return;
+    }
+    for (NSUInteger i = 0; i < numberOfDealtCards; i++){
+        id <Card> card = cards[i];
+        if (card.matched){
+            id <Card> drawnCard = [deck drawRandomCard];
+            cards[i] = drawnCard;
+        }
+    }
+    [cards removeObjectIdenticalTo:[NSNull null]];
 }
 
 @end
