@@ -41,4 +41,10 @@
     return score;
 }
 
+- (void)replaceMatchedCards:(NSMutableArray *)cards withDeck:(id <Deck>)deck{
+    //TODO implement
+}
+
+- (NSUInteger)numberOfCardsToAdd{return 1;}
+
 @end

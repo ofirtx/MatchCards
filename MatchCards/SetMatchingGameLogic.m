@@ -8,12 +8,15 @@
 
 #import "SetMatchingGameLogic.h"
 #import "SetCard.h"
+#define NUMBER_OF_CRADS_TO_ADD 3
 
 @implementation SetMatchingGameLogic
 
 @synthesize choosingPenalty;
 
 @synthesize mismatchPenalty;
+
+@synthesize numberOfCardsToAdd;
 
 - (NSUInteger)mismatchPenalty {return 1;}
 - (NSUInteger)choosingPenalty {return 0;}
@@ -57,6 +60,32 @@
     BOOL equal = (thirdCard.shading == firstCard.shading) && (thirdCard.shading == secondCard.shading);
     BOOL dif = !((thirdCard.shading ==  firstCard.shading) || (thirdCard.shading == secondCard.shading) || (secondCard.shading == firstCard.shading));
     return equal || dif;
+}
+
+- (NSUInteger)numberOfMinCardsToHold{return 12;}
+
+- (void)slideToFit:(NSMutableArray *)cards withDeck:(id <Deck>)deck{
+    [cards removeObjectIdenticalTo:[NSNull null]];
+}
+
+- (void)replaceMatchedCards:(NSMutableArray *)cards withDeck:(id <Deck>)deck{
+    NSUInteger numberOfDealtCards = cards.count;
+    if (numberOfDealtCards > self.numberOfMinCardsToHold){
+        [self slideToFit:cards withDeck:deck];
+        return;
+    }
+    for (NSUInteger i = 0; i < numberOfDealtCards; i++){
+        id <Card> card = cards[i];
+        if (card.matched){
+            id <Card> drawnCard = [deck drawRandomCard];
+            cards[i] = drawnCard;
+        }
+    }
+    [cards removeObjectIdenticalTo:[NSNull null]];
+}
+
+-(NSUInteger)numberOfCardsToAdd{
+    return 3;
 }
 
 @end
