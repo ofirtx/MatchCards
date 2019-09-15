@@ -45,4 +45,6 @@
     //TODO implement
 }
 
+- (NSUInteger)numberOfCardsToAdd{return 1;}
+
 @end

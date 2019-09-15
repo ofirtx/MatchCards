@@ -8,12 +8,15 @@
 
 #import "SetMatchingGameLogic.h"
 #import "SetCard.h"
+#define NUMBER_OF_CRADS_TO_ADD 3
 
 @implementation SetMatchingGameLogic
 
 @synthesize choosingPenalty;
 
 @synthesize mismatchPenalty;
+
+@synthesize numberOfCardsToAdd;
 
 - (NSUInteger)mismatchPenalty {return 1;}
 - (NSUInteger)choosingPenalty {return 0;}
@@ -79,6 +82,10 @@
         }
     }
     [cards removeObjectIdenticalTo:[NSNull null]];
+}
+
+-(NSUInteger)numberOfCardsToAdd{
+    return 3;
 }
 
 @end

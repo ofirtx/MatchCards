@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @required
 @property (nonatomic, readonly) NSUInteger mismatchPenalty;
 @property (nonatomic, readonly) NSUInteger choosingPenalty;
+@property (nonatomic, readonly) NSUInteger numberOfCardsToAdd;
 
 
 - (int)match:(NSArray *)cards;

@@ -157,5 +157,12 @@
     [self.logic replaceMatchedCards:self.cards withDeck:self.deck];
 }
 
+- (void)dealMoreCards{
+    for (NSUInteger i = 0; i < self.logic.numberOfCardsToAdd; i++){
+        id <Card> drawnCard = [self.deck drawRandomCard];
+        if(!drawnCard) break;
+        [self.cards addObject:drawnCard];
+    }
+}
 
 @end
