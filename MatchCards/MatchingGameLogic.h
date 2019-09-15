@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Deck.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,14 +16,13 @@ NS_ASSUME_NONNULL_BEGIN
 @required
 @property (nonatomic, readonly) NSUInteger mismatchPenalty;
 @property (nonatomic, readonly) NSUInteger choosingPenalty;
+@property (nonatomic, readonly) NSUInteger numberOfCardsToAdd;
 
 
--(int)match:(NSArray *)cards;
-
+- (int)match:(NSArray *)cards;
+- (void)replaceMatchedCards:(NSMutableArray *)cards withDeck:(id <Deck>)deck;
 
 @optional
-
-
 
 @end
 

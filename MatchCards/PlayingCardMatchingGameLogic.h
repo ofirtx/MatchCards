@@ -15,9 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly) NSUInteger mismatchPenalty;
 @property (nonatomic, readonly) NSUInteger choosingPenalty;
+@property (nonatomic, readonly) NSUInteger numberOfCardsToAdd;
 
 -(int)match:(NSArray *)cards;
-
+- (void)replaceMatchedCards:(NSMutableArray *)cards withDeck:(id <Deck>)deck;
 
 @end
 
