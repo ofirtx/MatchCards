@@ -8,6 +8,7 @@
 
 #import "MatchingCardViewController.h"
 #import "ShowHistoryViewController.h"
+#import "Grid.h"
 
 @interface MatchingCardViewController ()
 
@@ -17,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *gameDescriptor;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *numToMatchControl;
 
+@property (nonatomic) Grid *grid;
 
 @end
 
