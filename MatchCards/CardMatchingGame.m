@@ -163,4 +163,6 @@
     }
 }
 
+- (NSUInteger)numberOfDealtCards{return self.cards.count;}
+
 @end

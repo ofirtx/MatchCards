@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)chooseCardAtIndex:(NSUInteger)index;
 - (id <Card>)cardAtIndex:(NSUInteger)index;
+- (NSUInteger)numberOfDealtCards;
 
 @property (nonatomic, readonly) NSInteger score;
 @property (nonatomic) NSUInteger numToMatch;
