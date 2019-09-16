@@ -10,6 +10,7 @@
 #import "PlayingCardDeck.h"
 #import "CardMatchinGameFactory.h"
 #import "PlayingCard.h"
+#import "PlayingCardView.h"
 
 @interface PlayingCardViewController ()
 
@@ -64,6 +65,19 @@
     }
     return str;
 }
+
+- (UIView *)generateViewForCard:(PlayingCard *)card{
+    PlayingCardView *view = [[PlayingCardView alloc] init];
+    [self updateView:view forCard:card];
+    return view;
+}
+
+- (void)updateView:(PlayingCardView *)view forCard:(PlayingCard *)card{
+    view.rank = card.rank;
+    view.suit = card.suit;
+    view.faceUp = card.chosen;
+}
+
 
 /*
 #pragma mark - Navigation
