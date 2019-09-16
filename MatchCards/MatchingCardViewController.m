@@ -17,7 +17,7 @@
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (weak, nonatomic) IBOutlet UILabel *gameDescriptor;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *numToMatchControl;
+@property (weak, nonatomic) IBOutlet UIView *tableView;
 
 @property (nonatomic) NSMutableArray <CardViewHolder*> *cardViewHolders;
 @property (nonatomic) Grid *grid;
@@ -25,6 +25,35 @@
 @end
 
 @implementation MatchingCardViewController
+
+#pragma mark - getters
+
+- (Grid *)grid{
+    if (!_grid){
+        _grid = [[Grid alloc] init];
+    }
+    return _grid;
+}
+
+- (NSMutableAttributedString *)history{
+    if(!_history) _history = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{}];
+    return _history;
+}
+
+- (CardMatchingGame *)game{
+    if (!_game){
+        _game = [self generateNewGameWithCardCount:12];
+    }
+    return _game;
+}
+
+- (NSMutableArray *)cardViewHolders
+{
+    if (!_cardViewHolders) _cardViewHolders = [NSMutableArray array];
+    return _cardViewHolders;
+}
+
+#pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if([segue.identifier isEqualToString:@"show history"]){
@@ -35,11 +64,6 @@
     }
 }
 
-- (NSMutableAttributedString *)history{
-    if(!_history) _history = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{}];
-    return _history;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self updateUI];
@@ -47,29 +71,14 @@
     // Do any additional setup after loading the view.
 }
 
+#pragma mark - abstarct methods
+
 - (NSAttributedString *)titleForCard:(id <Card>)card {return nil;}
 - (UIImage *)backgroundImageForCard:(id <Card>)card {return nil;}
-
-- (CardMatchingGame *)generateNewGame{
-    return nil;
-}
-
-- (CardMatchingGame *)generateNewGameWithCardCount:(NSUInteger)cardCount{ //abstract
-    return nil;
-}
-
-- (CardMatchingGame *)game{
-    if (!_game){
-        _game = [self generateNewGameWithCardCount:[self.buttons count]];
-    }
-    return _game;
-}
-
-- (NSMutableArray *)cardViewHolders
-{
-    if (!_cardViewHolders) _cardViewHolders = [NSMutableArray array];
-    return _cardViewHolders;
-}
+- (CardMatchingGame *)generateNewGame{return nil;}
+- (CardMatchingGame *)generateNewGameWithCardCount:(NSUInteger)cardCount{return nil;}
+- (NSAttributedString *)getDescriptorText{return nil;}
+- (void)updateView:(UIView *)view forCard:(id <Card>)card{}
 
 - (IBAction)touchCardButton:(UIButton *)sender {
     NSUInteger chosenButtonIndex = [self.buttons indexOfObject:sender];
@@ -86,14 +95,32 @@
 }
 
 - (CardViewHolder *)getHolderOfCard:(id <Card>)card{
-    return nil; //TODO implement
+    CardViewHolder *holder = nil;
+    for (CardViewHolder *holder in self.cardViewHolders){
+        if(holder.card == card) return holder;
+    }
+    return holder;
 }
 
-- (void)removeMatchedCardViews{
+- (CardViewHolder *)getHolderOfView:(UIView *)view{
+    CardViewHolder *holder = nil;
+    for (CardViewHolder *holder in self.cardViewHolders){
+        if(holder.view == view) return holder;
+    }
+    return holder;
 }
+#pragma mark - UI changes
 
 - (UIView *)generateViewForCard:(id <Card>)card{
-    return nil; // TODO implement
+    UIView *view = [[UIView alloc] initWithFrame:[self.grid frameOfCellAtRow:0 inColumn:0]];
+    view.backgroundColor = [UIColor whiteColor];
+    return view;// TODO implement
+}
+
+- (UIView *)generateViewForCard:(id <Card>)card withIndex:(NSUInteger)index{
+    UIView *view = [[UIView alloc] initWithFrame:[self frameForIndex:index]];
+    view.backgroundColor = [UIColor whiteColor];
+    return view;// TODO implement
 }
 
 - (void)setHoldersInPlace{
@@ -105,31 +132,51 @@
             holder = [[CardViewHolder alloc] init];
             holder.card = card;
             holder.view = [self generateViewForCard:card];
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                  action:@selector(touchCard:)];
+            [holder.view addGestureRecognizer:tap];
+            //holder.view.frame = [self frameForIndex:i];
+            [self.tableView addSubview:holder.view];
+            [holder.view setNeedsDisplay];
         }
         [holders addObject:holder];
     }
+    self.cardViewHolders = holders;
+}
+
+- (CGRect)frameForIndex:(NSUInteger)index{
+    return [self.grid frameOfCellAtRow:index / [self.grid columnCount] inColumn: index % [self.grid columnCount]];
 }
 
 - (void)placeViews{
-    
+    for(NSUInteger i = 0; i < self.cardViewHolders.count; i++){
+//        self.cardViewHolders[i].view.frame = [self frameForIndex:i];
+        [UIView animateWithDuration:0.5 animations:^{
+            self.cardViewHolders[i].view.frame = [self frameForIndex:i];
+        }];
+    }
+}
+
+- (void)updateViews{
+    for(CardViewHolder *holder in self.cardViewHolders){
+        [self updateView:holder.view forCard:holder.card];
+    }
 }
 
 - (void)placeCards{
     [self setHoldersInPlace];
     [self placeViews];
+    [self updateViews];
 }
 
 - (void) updateUI{
+    [self adjustGridToView];
     [self placeCards];
     for(NSUInteger i = 0; i < [self.game numberOfDealtCards]; i++){
         
     }
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", (int)self.game.score];
     self.gameDescriptor.attributedText = [self getDescriptorText];
-}
-
-- (NSAttributedString *)getDescriptorText{ //abstract
-    return nil;
 }
 
 -(NSString *)cardsToString:(NSArray *)cards{
@@ -140,16 +187,33 @@
     return str;
 }
 
+#pragma mark - user input
+
+- (void)touchCard:(UITapGestureRecognizer *)gesture{
+    if (gesture.state == UIGestureRecognizerStateEnded) {
+        UIView *touchedView = gesture.view;
+        CardViewHolder *touchedHolder = [self getHolderOfView:touchedView];
+        NSUInteger index = [self.cardViewHolders indexOfObject:touchedHolder];
+        [self.game chooseCardAtIndex:index];
+        [self updateUI];
+    }
+}
 
 - (IBAction)resetGame:(id)sender {
     self.game = [self generateNewGame];
     [self updateUI];
     self.gameDescriptor.text = @"Please choose a card";
-    self.numToMatchControl.enabled = YES;
 }
 
-- (IBAction)adjustNumToMatch:(UISegmentedControl *)sender {
-    self.game.numToMatch = sender.selectedSegmentIndex + 2;
+- (void)adjustGridToView{
+    Grid *grid = self.grid;
+    grid.size = self.tableView.frame.size;
+    grid.maxCellWidth = grid.size.width / 4;
+    grid.maxCellHeight = grid.size.width * 1.5;
+    grid.cellAspectRatio =  grid.size.width / grid.size.height;
+    grid.minimumNumberOfCells = 12;
+    
+    //TODO adjust to actually fit
 }
 
 @end

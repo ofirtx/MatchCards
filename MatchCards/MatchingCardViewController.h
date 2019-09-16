@@ -20,6 +20,8 @@
 - (UIImage *)backgroundImageForCard:(id <Card>)card;
 - (NSAttributedString *)getDescriptorText;
 - (CardMatchingGame *)generateNewGameWithCardCount:(NSUInteger)cardCount;
+- (UIView *)generateViewForCard:(id <Card>)card;
+- (void)updateView:(UIView *)view forCard:(id <Card>)card;
 
 
 
