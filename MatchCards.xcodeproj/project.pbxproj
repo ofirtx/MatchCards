@@ -145,9 +145,9 @@
 			children = (
 				714962FE231D44EC0008BCB1 /* AppDelegate.h */,
 				714962FF231D44EC0008BCB1 /* AppDelegate.m */,
+				71496304231D44EC0008BCB1 /* Main.storyboard */,
 				71496301231D44EC0008BCB1 /* MatchingCardViewController.h */,
 				71496302231D44EC0008BCB1 /* MatchingCardViewController.m */,
-				71496304231D44EC0008BCB1 /* Main.storyboard */,
 				71649A732326448A00550C61 /* ShowHistoryViewController.h */,
 				71649A742326448A00550C61 /* ShowHistoryViewController.m */,
 				71649A612324E43E00550C61 /* PlayingCardViewController.h */,

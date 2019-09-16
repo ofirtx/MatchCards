@@ -74,13 +74,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MatchCards/MatchingCardViewController.m"
-            timestampString = "590244681.506501"
+            timestampString = "590309837.7818381"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "60"
             endingLineNumber = "60"
-            landmarkName = "-game"
-            landmarkType = "7">
+            landmarkName = "@implementation MatchingCardViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

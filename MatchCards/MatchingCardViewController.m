@@ -67,7 +67,7 @@
 
 - (NSMutableArray *)cardViewHolders
 {
-    if (!_cardViews) _cardViewHolders = [NSMutableArray array];
+    if (!_cardViewHolders) _cardViewHolders = [NSMutableArray array];
     return _cardViewHolders;
 }
 
@@ -90,14 +90,37 @@
 }
 
 - (void)removeMatchedCardViews{
-    for(id <Card> matched in self.game.lastMatched){
-        CardViewHolder *holder = [self getHolderOfCard:matched];
-        
+}
+
+- (UIView *)generateViewForCard:(id <Card>)card{
+    return nil; // TODO implement
+}
+
+- (void)setHoldersInPlace{
+    NSMutableArray *holders = [[NSMutableArray alloc] init];
+    for(NSUInteger i = 0; i < [self.game numberOfDealtCards]; i++){
+        id <Card> card = [self.game cardAtIndex:i];
+        CardViewHolder *holder = [self getHolderOfCard:card];
+        if(!holder){
+            holder = [[CardViewHolder alloc] init];
+            holder.card = card;
+            holder.view = [self generateViewForCard:card];
+        }
+        [holders addObject:holder];
     }
 }
 
-- (void) updateUI{
+- (void)placeViews{
     
+}
+
+- (void)placeCards{
+    [self setHoldersInPlace];
+    [self placeViews];
+}
+
+- (void) updateUI{
+    [self placeCards];
     for(NSUInteger i = 0; i < [self.game numberOfDealtCards]; i++){
         
     }
