@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MatchCards/MatchingCardViewController.m"
-            timestampString = "590327144.263283"
+            timestampString = "590336627.138612"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
             landmarkName = "-getDescriptorText"
             landmarkType = "7">
          </BreakpointContent>
@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MatchCards/MatchingCardViewController.m"
-            timestampString = "590327144.263589"
+            timestampString = "590336627.1386859"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "115"
-            endingLineNumber = "115"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
             landmarkName = "-generateViewForCard:"
             landmarkType = "7">
          </BreakpointContent>
@@ -106,7 +106,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MatchCards/MatchingCardViewController.m"
-            timestampString = "590327144.263801"
+            timestampString = "590336627.138752"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "175"
@@ -121,13 +121,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MatchCards/MatchingCardViewController.m"
-            timestampString = "590327144.264006"
+            filePath = "MatchCards/PlayingCardViewController.m"
+            timestampString = "590336627.138815"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
-            landmarkName = "-touchCard:"
+            startingLineNumber = "109"
+            endingLineNumber = "109"
+            landmarkName = "-touchView:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

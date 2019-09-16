@@ -14,6 +14,8 @@
 
 @interface PlayingCardViewController ()
 
+@property (nonatomic) UIView *chosenview;
+
 @end
 
 @implementation PlayingCardViewController
@@ -77,21 +79,49 @@
     view.suit = card.suit;
 }
 
+- (void)touchCard:(UITapGestureRecognizer *)gesture{
+        if (gesture.state == UIGestureRecognizerStateEnded) {
+            __weak PlayingCardViewController * weakSelf = self;
+            PlayingCardView *touchedView = (PlayingCardView *)gesture.view;
+            CardViewHolder *touchedHolder = [self getHolderOfView:touchedView];
+            NSUInteger index = [self.cardViewHolders indexOfObject:touchedHolder];
+            if([self.game cardAtIndex:index].matched){
+                return;
+            }
+            if(touchedView.faceUp){
+                [self.game chooseCardAtIndex:index];
+                [self updateUI];
+                return;
+            }
+            [UIView transitionWithView:touchedView
+                          duration:0.5
+                           options:UIViewAnimationOptionTransitionFlipFromLeft animations:^{
+                               
+                               [weakSelf touchView:gesture.view];
+                           } completion:^(BOOL finished) {
+                               [weakSelf.game chooseCardAtIndex:index];
+                               [weakSelf updateUI];
+                           }];
+    }
+}
+
 - (void)touchView:(PlayingCardView *)view{
+    if(view.faceUp) return;
     [UIView transitionWithView:view
                       duration:0.5
                        options:UIViewAnimationOptionTransitionFlipFromLeft animations:^{
                            view.faceUp = !view.faceUp;
-                       } completion:^(BOOL finished) {
-                       }];
+                       } completion:^(BOOL finished) {}];
+    [view setNeedsDisplay];
 }
 
 - (void)updateView:(PlayingCardView *)view forCard:(PlayingCard *)card{
     if(view.faceUp != card.chosen){
+        __weak PlayingCardViewController * weakSelf = self;
         [UIView transitionWithView:view
                           duration:0.5
                            options:UIViewAnimationOptionTransitionFlipFromLeft animations:^{
-                               [self setView:view forCard:card];
+                               [weakSelf setView:view forCard:card];
                                view.faceUp = !view.faceUp;
                            } completion:^(BOOL finished) {
                            }];

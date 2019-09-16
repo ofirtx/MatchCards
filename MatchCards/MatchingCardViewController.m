@@ -9,7 +9,6 @@
 #import "MatchingCardViewController.h"
 #import "ShowHistoryViewController.h"
 #import "Grid.h"
-#import "CardViewHolder.h"
 
 @interface MatchingCardViewController ()
 
@@ -19,7 +18,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *gameDescriptor;
 @property (weak, nonatomic) IBOutlet UIView *tableView;
 
-@property (nonatomic) NSMutableArray <CardViewHolder*> *cardViewHolders;
 @property (nonatomic) Grid *grid;
 
 @end
@@ -80,6 +78,7 @@
 - (NSAttributedString *)getDescriptorText{return nil;}
 - (void)updateView:(UIView *)view forCard:(id <Card>)card{}
 - (void)touchView:(UIView *)view{}
+- (void)touchCard:(UITapGestureRecognizer *)gesture{}
 
 - (IBAction)touchCardButton:(UIButton *)sender {
     NSUInteger chosenButtonIndex = [self.buttons indexOfObject:sender];
@@ -150,10 +149,11 @@
 }
 
 - (void)placeViews{
+    __weak MatchingCardViewController *weakSelf = self;
     for(NSUInteger i = 0; i < self.cardViewHolders.count; i++){
 //        self.cardViewHolders[i].view.frame = [self frameForIndex:i];
         [UIView animateWithDuration:0.5 animations:^{
-            self.cardViewHolders[i].view.frame = [self frameForIndex:i];
+            weakSelf.cardViewHolders[i].view.frame = [weakSelf frameForIndex:i];
         }];
     }
 }
@@ -190,26 +190,14 @@
 
 #pragma mark - user input
 
-- (void)touchCard:(UITapGestureRecognizer *)gesture{
-    if (gesture.state == UIGestureRecognizerStateEnded) {
-        UIView *touchedView = gesture.view;
-        CardViewHolder *touchedHolder = [self getHolderOfView:touchedView];
-        NSUInteger index = [self.cardViewHolders indexOfObject:touchedHolder];
-        [UIView transitionWithView:touchedView
-                          duration:0.5
-                           options:UIViewAnimationOptionTransitionFlipFromLeft animations:^{
-                               [self.game chooseCardAtIndex:index];
-                               [self touchView:gesture.view];
-                           } completion:^(BOOL finished) {
-                               [self updateUI];
-                           }];
-//        [self.game chooseCardAtIndex:index];
-//        [self updateUI];
-    }
-}
+
 
 - (IBAction)resetGame:(id)sender {
     self.game = [self generateNewGame];
+    for(CardViewHolder *holder in self.cardViewHolders){
+        [holder.view removeFromSuperview];
+    }
+    self.cardViewHolders = [NSMutableArray array];
     [self updateUI];
     self.gameDescriptor.text = @"Please choose a card";
 }
