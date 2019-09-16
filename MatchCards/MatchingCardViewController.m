@@ -79,6 +79,7 @@
 - (CardMatchingGame *)generateNewGameWithCardCount:(NSUInteger)cardCount{return nil;}
 - (NSAttributedString *)getDescriptorText{return nil;}
 - (void)updateView:(UIView *)view forCard:(id <Card>)card{}
+- (void)touchView:(UIView *)view{}
 
 - (IBAction)touchCardButton:(UIButton *)sender {
     NSUInteger chosenButtonIndex = [self.buttons indexOfObject:sender];
@@ -194,8 +195,16 @@
         UIView *touchedView = gesture.view;
         CardViewHolder *touchedHolder = [self getHolderOfView:touchedView];
         NSUInteger index = [self.cardViewHolders indexOfObject:touchedHolder];
-        [self.game chooseCardAtIndex:index];
-        [self updateUI];
+        [UIView transitionWithView:touchedView
+                          duration:0.5
+                           options:UIViewAnimationOptionTransitionFlipFromLeft animations:^{
+                               [self.game chooseCardAtIndex:index];
+                               [self touchView:gesture.view];
+                           } completion:^(BOOL finished) {
+                               [self updateUI];
+                           }];
+//        [self.game chooseCardAtIndex:index];
+//        [self updateUI];
     }
 }
 

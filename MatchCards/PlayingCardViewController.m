@@ -72,10 +72,33 @@
     return view;
 }
 
-- (void)updateView:(PlayingCardView *)view forCard:(PlayingCard *)card{
+- (void)setView:(PlayingCardView *)view forCard:(PlayingCard *)card{
     view.rank = card.rank;
     view.suit = card.suit;
-    view.faceUp = card.chosen;
+}
+
+- (void)touchView:(PlayingCardView *)view{
+    [UIView transitionWithView:view
+                      duration:0.5
+                       options:UIViewAnimationOptionTransitionFlipFromLeft animations:^{
+                           view.faceUp = !view.faceUp;
+                       } completion:^(BOOL finished) {
+                       }];
+}
+
+- (void)updateView:(PlayingCardView *)view forCard:(PlayingCard *)card{
+    if(view.faceUp != card.chosen){
+        [UIView transitionWithView:view
+                          duration:0.5
+                           options:UIViewAnimationOptionTransitionFlipFromLeft animations:^{
+                               [self setView:view forCard:card];
+                               view.faceUp = !view.faceUp;
+                           } completion:^(BOOL finished) {
+                           }];
+    }
+    else{
+        [self setView:view forCard:card];
+    }
 }
 
 

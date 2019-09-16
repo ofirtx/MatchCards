@@ -22,6 +22,7 @@
 - (CardMatchingGame *)generateNewGameWithCardCount:(NSUInteger)cardCount;
 - (UIView *)generateViewForCard:(id <Card>)card;
 - (void)updateView:(UIView *)view forCard:(id <Card>)card;
+- (void)touchView:(UIView *)view;
 
 
 
