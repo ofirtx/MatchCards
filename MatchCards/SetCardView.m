@@ -10,25 +10,69 @@
 
 @implementation SetCardView
 
+#pragma mark - Properties
+
+- (void)setShape:(NSString *)shape
+{
+    _shape = shape;
+    [self setNeedsDisplay];
+}
+
+- (void)setColor:(NSString *)color
+{
+    _color = color;
+    [self setNeedsDisplay];
+}
+
+- (void)setShading:(NSUInteger)shading{
+    _shading = shading;
+    [self setNeedsDisplay];
+}
+
+- (void)setNumber:(NSUInteger)number{
+    _number = number;
+    [self setNeedsDisplay];
+}
+
 #pragma mark - drawing shapes
 
 #define CORNER_FONT_STANDARD_HEIGHT 180.0
 #define CORNER_RADIUS 12.0
 
-- (void)drawDiamondAtPoint:(CGPoint)point{
+- (void)addShadeToPath:(UIBezierPath *)path{
     
+}
+
+- (void)drawDiamondAtPoint:(CGPoint)point{
+    UIBezierPath* squarePath = [UIBezierPath bezierPathWithRect: CGRectMake(point.x,point.y,self.bounds.size.width / 4 ,self.bounds.size.width / 4)];
+    [self addShadeToPath:squarePath];
 }
 
 - (void)drawSquiggleAtPoint:(CGPoint)point{
-    
+    UIBezierPath* polygonPath = [UIBezierPath bezierPath];
+    [polygonPath moveToPoint: CGPointMake(point.x, point.y - self.bounds.size.width / 8)];
+    [polygonPath addLineToPoint: CGPointMake(point.x - self.bounds.size.width / 16 , point.y + self.bounds.size.width / 16)];
+    [polygonPath addLineToPoint: CGPointMake(point.x + self.bounds.size.width / 16 , point.y + self.bounds.size.width / 16)];
+    [polygonPath closePath];
+    [self addShadeToPath:polygonPath];
 }
 
 - (void)drawOvalAtPoint:(CGPoint)point{
-    
+    UIBezierPath* ovalPath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(point.x,point.y,self.bounds.size.width / 4 ,self.bounds.size.width / 4)];
+    [self addShadeToPath:ovalPath];
 }
 
 - (void)drawShapes{
-    
+    CGPoint center = CGPointMake(self.bounds.size.width / 2.0, self.bounds.size.height / 2.0);
+    if([self.shape isEqualToString: @"■"]){
+        [self drawDiamondAtPoint:center];
+    }
+    else if ([self.shape isEqualToString: @"●"]){
+        [self drawOvalAtPoint:center];
+    }
+    else if ([self.shape isEqualToString: @"▲"]){
+        [self drawSquiggleAtPoint:center];
+    }
 }
 
 - (CGFloat)cornerScaleFactor { return self.bounds.size.height / CORNER_FONT_STANDARD_HEIGHT; }
