@@ -69,16 +69,46 @@
     [ovalPath stroke];
 }
 
-- (void)drawShapes{
-    CGPoint center = CGPointMake(self.bounds.size.width / 2.0, self.bounds.size.height / 2.0);
+- (void)drawShapeAtPoint:(CGPoint)point{
     if([self.shape isEqualToString: @"■"]){
-        [self drawDiamondAtPoint:center];
+        [self drawDiamondAtPoint:point];
     }
     else if ([self.shape isEqualToString: @"●"]){
-        [self drawOvalAtPoint:center];
+        [self drawOvalAtPoint:point];
     }
     else if ([self.shape isEqualToString: @"▲"]){
-        [self drawSquiggleAtPoint:center];
+        [self drawSquiggleAtPoint:point];
+    }
+}
+
+- (void)drawSingleShape{
+    CGPoint center = CGPointMake(self.bounds.size.width / 2.0, self.bounds.size.height / 2.0);
+    [self drawShapeAtPoint:center];
+}
+
+- (void)draw2Shapes{
+    CGPoint center = CGPointMake(self.bounds.size.width / 2.0, self.bounds.size.height / 2.0);
+    [self drawShapeAtPoint:CGPointMake(center.x, center.y  - self.bounds.size.width / 6)];
+    [self drawShapeAtPoint:CGPointMake(center.x, center.y  + self.bounds.size.width / 6)];
+}
+
+- (void)draw3Shapes{
+    CGPoint center = CGPointMake(self.bounds.size.width / 2.0, self.bounds.size.height / 2.0);
+    [self drawShapeAtPoint:center];
+    [self drawShapeAtPoint:CGPointMake(center.x, center.y  - self.bounds.size.width / 3)];
+    [self drawShapeAtPoint:CGPointMake(center.x, center.y  + self.bounds.size.width / 3)];
+}
+
+- (void)drawShapes{
+    CGPoint center = CGPointMake(self.bounds.size.width / 2.0, self.bounds.size.height / 2.0);
+    if(self.number == 0){
+        [self drawSingleShape];
+    }
+    else if (self.number == 1){
+        [self draw2Shapes];
+    }
+    else if (self.number == 2){
+        [self draw3Shapes];
     }
 }
 
