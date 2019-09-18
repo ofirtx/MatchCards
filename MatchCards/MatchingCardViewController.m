@@ -118,8 +118,9 @@
 }
 
 - (UIView *)generateViewForCard:(id <Card>)card withIndex:(NSUInteger)index{
-    UIView *view = [[UIView alloc] initWithFrame:[self frameForIndex:index]];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width / 2, self.view.bounds.size.height * 2, self.grid.cellSize.width, self.grid.cellSize.height)];
     view.backgroundColor = [UIColor whiteColor];
+    [view setNeedsDisplay];
     return view;// TODO implement
 }
 
