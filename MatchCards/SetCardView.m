@@ -36,6 +36,7 @@
 
 #pragma mark - drawing shapes
 
+#define STROKE_WIDTH 0.1;
 #define CORNER_FONT_STANDARD_HEIGHT 180.0
 #define CORNER_RADIUS 12.0
 
@@ -44,8 +45,10 @@
 }
 
 - (void)drawDiamondAtPoint:(CGPoint)point{
-    UIBezierPath* squarePath = [UIBezierPath bezierPathWithRect: CGRectMake(point.x,point.y,self.bounds.size.width / 4 ,self.bounds.size.width / 4)];
+    UIBezierPath* squarePath = [UIBezierPath bezierPathWithRect: CGRectMake(point.x - self.bounds.size.width / 8, point.y - self.bounds.size.width / 8, self.bounds.size.width / 4, self.bounds.size.width / 4)];
     [self addShadeToPath:squarePath];
+    [[self getColor] setStroke];
+    [squarePath stroke];
 }
 
 - (void)drawSquiggleAtPoint:(CGPoint)point{
@@ -55,11 +58,15 @@
     [polygonPath addLineToPoint: CGPointMake(point.x + self.bounds.size.width / 16 , point.y + self.bounds.size.width / 16)];
     [polygonPath closePath];
     [self addShadeToPath:polygonPath];
+    [[self getColor] setStroke];
+    [polygonPath stroke];
 }
 
 - (void)drawOvalAtPoint:(CGPoint)point{
-    UIBezierPath* ovalPath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(point.x,point.y,self.bounds.size.width / 4 ,self.bounds.size.width / 4)];
+    UIBezierPath* ovalPath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(point.x - self.bounds.size.width / 8, point.y - self.bounds.size.width / 8, self.bounds.size.width / 4, self.bounds.size.width / 4)];
     [self addShadeToPath:ovalPath];
+    [[self getColor] setStroke];
+    [ovalPath stroke];
 }
 
 - (void)drawShapes{
@@ -95,6 +102,13 @@
     [roundedRect stroke];
     
     [self drawShapes];
+}
+
+- (UIColor *)getColor{
+    if ([self.color isEqualToString:@"red"])  return UIColor.redColor;
+    if([self.color isEqualToString:@"green"]) return UIColor.greenColor;
+    if([self.color isEqualToString:@"blue"]) return UIColor.purpleColor;
+    return UIColor.blackColor;
 }
 
 #pragma mark - Initialization
