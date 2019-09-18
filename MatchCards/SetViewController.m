@@ -99,6 +99,7 @@
 }
 
 - (void)setView:(SetCardView *)view forCard:(SetCard *)card{
+    view.chosen = card.chosen;
     view.color = card.color;
     view.shape = card.shape;
     view.shading = card.shading;

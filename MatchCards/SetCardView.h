@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) NSString *color;
 @property (nonatomic) NSUInteger number;
 @property (nonatomic) NSUInteger shading;
+@property (nonatomic) BOOL chosen;
 
 @end
 

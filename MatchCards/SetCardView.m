@@ -34,6 +34,11 @@
     [self setNeedsDisplay];
 }
 
+- (void)setChosen:(BOOL)chosen{
+    _chosen = chosen;
+    [self setNeedsDisplay];
+}
+
 #pragma mark - drawing shapes
 
 #define STROKE_WIDTH 0.02;
@@ -165,7 +170,6 @@
 }
 
 - (void)drawShapes{
-    CGPoint center = CGPointMake(self.bounds.size.width / 2.0, self.bounds.size.height / 2.0);
     if(self.number == 0){
         [self drawSingleShape];
     }
@@ -190,7 +194,7 @@
     
     [roundedRect addClip];
     
-    [[UIColor whiteColor] setFill];
+    [self.chosen ? [UIColor grayColor] : [UIColor whiteColor] setFill];
     UIRectFill(self.bounds);
     
     [[UIColor blackColor] setStroke];
