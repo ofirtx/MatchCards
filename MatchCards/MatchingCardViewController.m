@@ -209,11 +209,11 @@
 
 - (void)adjustGridToView{
     Grid *grid = self.grid;
-    grid.size = self.tableView.frame.size;
+    grid.size = self.tableView.bounds.size;
     grid.maxCellWidth = grid.size.width / 4;
     grid.maxCellHeight = grid.size.width * 1.5;
     grid.cellAspectRatio =  grid.size.width / grid.size.height;
-    grid.minimumNumberOfCells = 12;
+    grid.minimumNumberOfCells = self.game.numberOfDealtCards;
     
     //TODO adjust to actually fit
 }
