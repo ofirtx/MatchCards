@@ -8,6 +8,7 @@
 
 #import "SetViewController.h"
 #import "SetDeck.h"
+#import "SetCardView.h"
 #import "CardMatchinGameFactory.h"
 
 @interface SetViewController ()
@@ -87,6 +88,36 @@
     return str;
 }
 
+- (UIView *)generateViewForCard:(SetCard *)card{
+    SetCardView *view = [[SetCardView alloc] init];
+    [self updateView:view forCard:card];
+    return view;
+}
+
+- (void)updateView:(SetCardView *)view forCard:(SetCard *)card{
+    [self setView:view forCard:card];
+}
+
+- (void)setView:(SetCardView *)view forCard:(SetCard *)card{
+    view.color = card.color;
+    view.shape = card.shape;
+    view.shading = card.shading;
+    view.number = card.number;
+}
+
+- (void)touchCard:(UITapGestureRecognizer *)gesture{
+    if (gesture.state == UIGestureRecognizerStateEnded) {
+        __weak SetViewController * weakSelf = self;
+        SetCardView *touchedView = (SetCardView *)gesture.view;
+        CardViewHolder *touchedHolder = [self getHolderOfView:touchedView];
+        NSUInteger index = [self.cardViewHolders indexOfObject:touchedHolder];
+        if([self.game cardAtIndex:index].matched){
+            return;
+        }
+        [self.game chooseCardAtIndex:index];
+        [self updateUI];
+    }
+}
 
 /*
 #pragma mark - Navigation
