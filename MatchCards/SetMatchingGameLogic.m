@@ -65,7 +65,13 @@
 - (NSUInteger)numberOfMinCardsToHold{return 12;}
 
 - (void)slideToFit:(NSMutableArray *)cards withDeck:(id <Deck>)deck{
-    [cards removeObjectIdenticalTo:[NSNull null]];
+    NSMutableArray *matched = [NSMutableArray array];
+    for(id <Card> card in cards){
+        if(card.matched){
+            [matched addObject:card];
+        }
+    }
+    [cards removeObjectsInArray:matched];
 }
 
 - (void)replaceMatchedCards:(NSMutableArray *)cards withDeck:(id <Deck>)deck{

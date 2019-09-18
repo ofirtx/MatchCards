@@ -118,6 +118,12 @@
         [self updateUI];
     }
 }
+- (IBAction)dealMoreCards:(UIButton *)sender {
+    [self.game dealMoreCards];
+    [self updateUI];
+    //deal more cards
+    //update UI
+}
 
 /*
 #pragma mark - Navigation
