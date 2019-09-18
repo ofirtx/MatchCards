@@ -89,16 +89,43 @@
     [squarePath stroke];
 }
 
-- (void)drawSquiggleAtPoint:(CGPoint)point{
-    UIBezierPath* polygonPath = [UIBezierPath bezierPath];
-    [polygonPath moveToPoint: CGPointMake(point.x, point.y - self.bounds.size.width / 8)];
-    [polygonPath addLineToPoint: CGPointMake(point.x - self.bounds.size.width / 16 , point.y + self.bounds.size.width / 16)];
-    [polygonPath addLineToPoint: CGPointMake(point.x + self.bounds.size.width / 16 , point.y + self.bounds.size.width / 16)];
-    [polygonPath closePath];
-    [self addShadeToPath:polygonPath];
+#define SQUIGGLE_WIDTH 0.3
+#define SQUIGGLE_HEIGHT 0.1
+#define SQUIGGLE_FACTOR 0.8
+#define SYMBOL_LINE_WIDTH 0.0
+
+- (void)drawSquiggleAtPoint:(CGPoint)point {
+    CGFloat dx = self.bounds.size.width * SQUIGGLE_WIDTH / 2.0;
+    CGFloat dy = self.bounds.size.height * SQUIGGLE_HEIGHT / 2.0;
+    CGFloat dsqx = dx * SQUIGGLE_FACTOR;
+    CGFloat dsqy = dy * SQUIGGLE_FACTOR;
+    UIBezierPath *squigglePath = [[UIBezierPath alloc] init]; // TODO rotate by 90 degrees somehow
+    [squigglePath moveToPoint:CGPointMake(point.x - dx, point.y - dy)];
+    [squigglePath addQuadCurveToPoint:CGPointMake(point.x + dx, point.y - dy)
+                 controlPoint:CGPointMake(point.x - dsqx, point.y - dy - dsqy)];
+    [squigglePath addCurveToPoint:CGPointMake(point.x + dx, point.y + dy)
+            controlPoint1:CGPointMake(point.x + dx + dsqx, point.y - dy + dsqy)
+            controlPoint2:CGPointMake(point.x + dx - dsqx, point.y + dy - dsqy)];
+    [squigglePath addQuadCurveToPoint:CGPointMake(point.x - dx, point.y + dy)
+                 controlPoint:CGPointMake(point.x + dsqx, point.y + dy + dsqy)];
+    [squigglePath addCurveToPoint:CGPointMake(point.x - dx, point.y - dy)
+            controlPoint1:CGPointMake(point.x - dx - dsqx, point.y + dy - dsqy)
+            controlPoint2:CGPointMake(point.x - dx + dsqx, point.y - dy + dsqy)];
+    [self addShadeToPath:squigglePath];
     [[self getColor] setStroke];
-    [polygonPath stroke];
+    [squigglePath stroke];
 }
+
+//- (void)drawSquiggleAtPoint:(CGPoint)point{
+//    UIBezierPath* polygonPath = [UIBezierPath bezierPath];
+//    [polygonPath moveToPoint: CGPointMake(point.x, point.y - self.bounds.size.width / 8)];
+//    [polygonPath addLineToPoint: CGPointMake(point.x - self.bounds.size.width / 16 , point.y + self.bounds.size.width / 16)];
+//    [polygonPath addLineToPoint: CGPointMake(point.x + self.bounds.size.width / 16 , point.y + self.bounds.size.width / 16)];
+//    [polygonPath closePath];
+//    [self addShadeToPath:polygonPath];
+//    [[self getColor] setStroke];
+//    [polygonPath stroke];
+//}
 
 - (void)drawOvalAtPoint:(CGPoint)point{
     UIBezierPath* ovalPath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(point.x - self.bounds.size.width / 8, point.y - self.bounds.size.width / 8, self.bounds.size.width / 4, self.bounds.size.width / 4)];
