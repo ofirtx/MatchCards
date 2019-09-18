@@ -36,12 +36,50 @@
 
 #pragma mark - drawing shapes
 
-#define STROKE_WIDTH 0.1;
+#define STROKE_WIDTH 0.02;
+#define STRIPES_DISTANCE_FACTOR 0.03
 #define CORNER_FONT_STANDARD_HEIGHT 180.0
 #define CORNER_RADIUS 12.0
 
 - (void)addShadeToPath:(UIBezierPath *)path{
-    
+    if(self.shading == 2) {
+        [self addSolidShadingToPath:path];
+    }
+    else if(self.shading == 1){
+        [self addStripedShadingToPath:path];
+    }
+    else if(self.shading == 0){
+        [self addClearShadingToPath:path];
+    }
+}
+
+- (void)addSolidShadingToPath:(UIBezierPath *)path{
+    [[self getColor] setFill];
+    [path fill];
+}
+
+- (void)addStripedShadingToPath:(UIBezierPath *)path{
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSaveGState(context);
+    [path addClip];
+    UIBezierPath *shading = [UIBezierPath bezierPath];
+    CGPoint p1 = self.bounds.origin;
+    CGPoint p2 = CGPointMake(p1.x, p1.y + self.bounds.size.height);
+    while (p1.x < self.bounds.size.width){
+        [shading moveToPoint:p1];
+        [shading addLineToPoint:p2];
+        p1.x = p1.x + self.bounds.size.width * STRIPES_DISTANCE_FACTOR;
+        p2.x = p2.x + self.bounds.size.width * STRIPES_DISTANCE_FACTOR;
+    }
+    shading.lineWidth = self.bounds.size.width / 2 * STROKE_WIDTH;
+    [[self getColor] setStroke];
+    [shading stroke];
+    CGContextRestoreGState(UIGraphicsGetCurrentContext());
+}
+
+- (void)addClearShadingToPath:(UIBezierPath *)path{
+    [UIColor.clearColor setFill];
+    [path fill];
 }
 
 - (void)drawDiamondAtPoint:(CGPoint)point{
