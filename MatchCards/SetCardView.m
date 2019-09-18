@@ -83,10 +83,15 @@
 }
 
 - (void)drawDiamondAtPoint:(CGPoint)point{
-    UIBezierPath* squarePath = [UIBezierPath bezierPathWithRect: CGRectMake(point.x - self.bounds.size.width / 8, point.y - self.bounds.size.width / 8, self.bounds.size.width / 4, self.bounds.size.width / 4)];
-    [self addShadeToPath:squarePath];
+    UIBezierPath* diamondPath = [UIBezierPath bezierPath];
+    [diamondPath moveToPoint:CGPointMake(point.x - self.bounds.size.width / 4, point.y)];
+    [diamondPath addLineToPoint:CGPointMake(point.x, point.y - self.bounds.size.width / 8)];
+    [diamondPath addLineToPoint:CGPointMake(point.x + self.bounds.size.width / 4, point.y)];
+    [diamondPath addLineToPoint:CGPointMake(point.x, point.y + self.bounds.size.width / 8)];
+    [diamondPath closePath];
+    [self addShadeToPath:diamondPath];
     [[self getColor] setStroke];
-    [squarePath stroke];
+    [diamondPath stroke];
 }
 
 #define SQUIGGLE_WIDTH 0.3
@@ -115,17 +120,6 @@
     [[self getColor] setStroke];
     [squigglePath stroke];
 }
-
-//- (void)drawSquiggleAtPoint:(CGPoint)point{
-//    UIBezierPath* polygonPath = [UIBezierPath bezierPath];
-//    [polygonPath moveToPoint: CGPointMake(point.x, point.y - self.bounds.size.width / 8)];
-//    [polygonPath addLineToPoint: CGPointMake(point.x - self.bounds.size.width / 16 , point.y + self.bounds.size.width / 16)];
-//    [polygonPath addLineToPoint: CGPointMake(point.x + self.bounds.size.width / 16 , point.y + self.bounds.size.width / 16)];
-//    [polygonPath closePath];
-//    [self addShadeToPath:polygonPath];
-//    [[self getColor] setStroke];
-//    [polygonPath stroke];
-//}
 
 - (void)drawOvalAtPoint:(CGPoint)point{
     UIBezierPath* ovalPath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(point.x - self.bounds.size.width / 8, point.y - self.bounds.size.width / 8, self.bounds.size.width / 4, self.bounds.size.width / 4)];
