@@ -141,6 +141,10 @@
         }
         [holders addObject:holder];
     }
+    for(CardViewHolder *holder in self.cardViewHolders){
+        if(![holders containsObject:holder])
+            [holder.view removeFromSuperview];
+    }
     self.cardViewHolders = holders;
 }
 
