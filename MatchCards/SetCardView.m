@@ -121,8 +121,21 @@
     [squigglePath stroke];
 }
 
+//- (void)drawOvalAtPoint:(CGPoint)point{
+//    UIBezierPath* ovalPath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(point.x - self.bounds.size.width / 8, point.y - self.bounds.size.width / 8, self.bounds.size.width / 4, self.bounds.size.width / 4)];
+//    [self addShadeToPath:ovalPath];
+//    [[self getColor] setStroke];
+//    [ovalPath stroke];
+//}
+
 - (void)drawOvalAtPoint:(CGPoint)point{
-    UIBezierPath* ovalPath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(point.x - self.bounds.size.width / 8, point.y - self.bounds.size.width / 8, self.bounds.size.width / 4, self.bounds.size.width / 4)];
+    UIBezierPath* ovalPath = [UIBezierPath bezierPath];
+    [ovalPath moveToPoint:CGPointMake(point.x + self.bounds.size.width / 8, point.y + self.bounds.size.width / 8)];
+    [ovalPath addLineToPoint:CGPointMake(point.x - self.bounds.size.width / 8 , point.y + self.bounds.size.width / 8)];
+    [ovalPath addQuadCurveToPoint:CGPointMake(point.x - self.bounds.size.width / 8, point.y - self.bounds.size.width / 8) controlPoint:CGPointMake(point.x - self.bounds.size.width / 3, point.y)];
+    [ovalPath addLineToPoint:CGPointMake(point.x + self.bounds.size.width / 8, point.y - self.bounds.size.width / 8)];
+    [ovalPath addQuadCurveToPoint:CGPointMake(point.x + self.bounds.size.width / 8, point.y + self.bounds.size.width / 8) controlPoint:CGPointMake(point.x + self.bounds.size.width / 3, point.y)];
+    [ovalPath closePath];
     [self addShadeToPath:ovalPath];
     [[self getColor] setStroke];
     [ovalPath stroke];
